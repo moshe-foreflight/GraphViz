@@ -1,5 +1,6 @@
+#if canImport(Clibgraphviz)
 import Clibgraphviz
-
+#endif
 /// A libgit error.
 public struct Error: Swift.Error {
 
@@ -7,8 +8,12 @@ public struct Error: Swift.Error {
     public let message: String?
 
     private static var lastErrorMessage: String? {
+#if canImport(Clibgraphviz)
         guard let error = aglasterr() else { return nil }
         return String(cString: error)
+#else
+        return String(cString:"---")
+#endif
     }
 
     init(message: String? = Error.lastErrorMessage) {

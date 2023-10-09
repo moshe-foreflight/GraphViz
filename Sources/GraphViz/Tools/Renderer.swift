@@ -1,7 +1,9 @@
 import Foundation
 import Dispatch
 
+#if canImport(Clibgraphviz)
 import Clibgraphviz
+#endif
 
 /**
  A GraphViz renderer.
@@ -78,6 +80,7 @@ public class Renderer {
                        on queue: DispatchQueue = .main,
                        completion: (@escaping (Result<Data, Swift.Error>) -> Void))
     {
+#if canImport(Clibgraphviz)
         let options = self.options
         let layout = self.layout
 
@@ -112,5 +115,6 @@ public class Renderer {
 
             completion(result)
         }
+        #endif
     }
 }

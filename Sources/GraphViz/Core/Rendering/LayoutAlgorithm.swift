@@ -1,4 +1,4 @@
-public enum LayoutAlgorithm: String {
+public enum LayoutAlgorithm: String, CaseIterable {
     /// dot draws directed graphs. It works well on DAGs and other graphs that can be drawn as hierarchies.
     case dot
 

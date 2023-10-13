@@ -1,4 +1,4 @@
-public enum Format: String, Hashable {
+public enum Format: String, Hashable, CaseIterable {
     /// Windows Bitmap Format
     case bmp
 

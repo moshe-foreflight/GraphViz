@@ -1,7 +1,7 @@
 import Foundation
 import Dispatch
 
-#if canImport(Clibgraphviz)
+#if canImport(Clibgraphviz) && canImport(cgraph) && canImport(gvc)
 import Clibgraphviz
 #endif
 
@@ -80,7 +80,7 @@ public class Renderer {
                        on queue: DispatchQueue = .main,
                        completion: (@escaping (Result<Data, Swift.Error>) -> Void))
     {
-#if canImport(Clibgraphviz)
+#if canImport(Clibgraphviz) && canImport(cgraph) && canImport(gvc)
         let options = self.options
         let layout = self.layout
 

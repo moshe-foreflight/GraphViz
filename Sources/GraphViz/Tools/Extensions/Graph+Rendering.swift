@@ -19,4 +19,25 @@ extension Graph {
     {
         Renderer(layout: layout).render(graph: self, to: format, completion: completion)
     }
+    
+    /**
+     This is the same as above, but adds support for swift async.
+
+     - Parameters:
+        - layout: The layout algorithm.
+        - format: The output format.
+        - options: The rendering options.
+     - Throws: `CocoaError` if the corresponding GraphViz tool isn't available.
+     */
+    @available(macOS 10.15, *)
+    public func render(using layout: LayoutAlgorithm,
+                       to format: Format,
+                       with options: Renderer.Options = [],
+                       on queue: DispatchQueue = .main) async throws -> Data {
+        return try await withCheckedThrowingContinuation { continuation in
+            render(using: layout, to: format, with: options, on: queue) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
 }

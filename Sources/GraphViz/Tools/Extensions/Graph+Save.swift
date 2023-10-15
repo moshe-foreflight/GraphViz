@@ -39,7 +39,7 @@ extension GraphViz.Graph {
 #else
         let graphString = DOTEncoder().encode(g)
         data = graphString.data(using: .utf8)!
-        _format = .plain
+        _format = .dot
 #endif
         } catch let e {
             print("Failed!")

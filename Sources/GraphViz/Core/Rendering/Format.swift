@@ -103,9 +103,6 @@ public enum Format: String, Hashable, CaseIterable {
 
     /// Text
     case plain
-    
-    /// TXT
-    case txt = "txt"
 
     /// Simple text format
     case plain_ext = "plain-ext"

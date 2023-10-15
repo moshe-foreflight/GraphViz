@@ -112,6 +112,12 @@ public class Renderer {
 
                 return Data(bytes: UnsafeRawPointer(bytes), count: Int(length))
 #else
+                if format == .dot {
+                    guard let dotAsData = dot.data(using: .utf8) else {
+                        throw Error(message: "Failed to convert dot `String` to `Data`.")
+                    }
+                    return dotAsData
+                }
                 throw Error(message: "Please install GraphViz to render graphs. You can use `brew install GraphViz` to do so.")
 #endif
             }

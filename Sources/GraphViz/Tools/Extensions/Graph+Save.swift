@@ -34,7 +34,7 @@ extension GraphViz.Graph {
         let data:Data
         
         
-#if canImport(Clibgraphviz) && canImport(cgraph) && canImport(gvc)
+#if canImport(Clibgraphviz)
         let fileExtension = format.rawValue
         data = try await g.render(using: algorithm, to: format)
 #else

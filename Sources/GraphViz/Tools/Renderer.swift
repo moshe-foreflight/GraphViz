@@ -1,7 +1,7 @@
 import Foundation
 import Dispatch
 
-#if canImport(Clibgraphviz) && canImport(cgraph) && canImport(gvc)
+#if canImport(Clibgraphviz)
 import Clibgraphviz
 #endif
 

@@ -1,4 +1,4 @@
-#if canImport(Clibgraphviz)
+#if canImport(Clibgraphviz) && canImport(cgv) && canImport(cgraph)
 import Clibgraphviz
 #endif
 /// A libgit error.
@@ -8,11 +8,11 @@ public struct Error: Swift.Error {
     public let message: String?
 
     private static var lastErrorMessage: String? {
-#if canImport(Clibgraphviz)
+#if canImport(Clibgraphviz) && canImport(cgv) && canImport(cgraph)
         guard let error = aglasterr() else { return nil }
         return String(cString: error)
 #else
-        return String(cString:"---")
+        return "---"
 #endif
     }
 
@@ -32,9 +32,11 @@ public func attempt(throwing function: () -> Int32) throws {
 
 public func attempt<T>(throwing function: () -> T) throws -> T {
     let result = function()
+#if canImport(Clibgraphviz) && canImport(cgv) && canImport(cgraph)
     guard agerrors() == 0 else {
         throw Error()
     }
+#endif
 
     return result
 }

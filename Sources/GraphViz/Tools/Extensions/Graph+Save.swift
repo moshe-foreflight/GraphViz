@@ -20,17 +20,20 @@ extension GraphViz.Graph {
     ///         - For small graphs, `circo` has a pretty layout.
     ///         - For a speedy alternative to `twopi`, try `sfdp`.
     ///   - folder: Where to save the file.
+    ///
+    ///
+    /// - Returns: The path to the file.
     public func save(
         basename:String,
         format: GraphViz.Format = .pdf,
         algorithm: GraphViz.LayoutAlgorithm = .twopi,
         folder: URL = FileManager.default.homeDirectoryForCurrentUser
-    ) async throws {
+    ) async throws -> String {
         var g = self
         g.overlap = "false"
         let data:Data
         
-
+        
 #if canImport(Clibgraphviz) && canImport(cgraph) && canImport(gvc)
         let fileExtension = format.rawValue
         data = try await g.render(using: algorithm, to: format)
@@ -44,5 +47,6 @@ extension GraphViz.Graph {
             path: "Desktop/\(basename).\(fileExtension)"
         ).standardizedFileURL
         try data.write(to: outputURL)
+        return outputURL.standardizedFileURL.absoluteString
     }
 }

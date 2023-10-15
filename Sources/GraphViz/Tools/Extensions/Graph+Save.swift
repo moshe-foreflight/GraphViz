@@ -25,13 +25,22 @@ extension GraphViz.Graph {
         format: GraphViz.Format = .pdf,
         algorithm: GraphViz.LayoutAlgorithm = .twopi,
         folder: URL = FileManager.default.homeDirectoryForCurrentUser
-    ) async {
+    ) async throws {
         var g = self
         g.overlap = "false"
+
         print("Rendering", terminator: "... ")
-        let dot:Data
+        let data:Data
+        var _format: Format = format
+
         do {
-            dot = try await g.render(using: algorithm, to: format)
+#if canImport(Clibgraphviz) && canImport(cgraph) && canImport(gvc)
+            data = try await g.render(using: algorithm, to: _format)
+#else
+        let graphString = DOTEncoder().encode(g)
+        data = graphString.data(using: .utf8)!
+        _format = .plain
+#endif
         } catch let e {
             print("Failed!")
             print("🚨 Failed to get graph data.")
@@ -42,11 +51,11 @@ extension GraphViz.Graph {
         }
         print("Done!")
         let outputURL = folder.appending(
-            path: "Desktop/\(basename).pdf"
+            path: "Desktop/\(basename).\(_format.rawValue)"
         ).standardizedFileURL
         do {
             print("Writing Data", terminator: " ... ")
-            try dot.write(to: outputURL)
+            try data.write(to: outputURL)
             print("Saved to \(outputURL.path)", terminator: "... ")
         }
         catch let e {

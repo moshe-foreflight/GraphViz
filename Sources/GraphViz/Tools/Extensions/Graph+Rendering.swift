@@ -21,7 +21,7 @@ extension Graph {
     }
     
     /**
-     This is the same as above, but adds support for swift async.
+     Calls
 
      - Parameters:
         - layout: The layout algorithm.
@@ -30,7 +30,7 @@ extension Graph {
      - Throws: `CocoaError` if the corresponding GraphViz tool isn't available.
      */
     @available(macOS 10.15, *)
-    public func renderAsync(using layout: LayoutAlgorithm,
+    public func render(using layout: LayoutAlgorithm,
                        to format: Format,
                        with options: Renderer.Options = [],
                        on queue: DispatchQueue = .main) async throws -> Data {

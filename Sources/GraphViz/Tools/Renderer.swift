@@ -80,12 +80,12 @@ public class Renderer {
                        on queue: DispatchQueue = .main,
                        completion: (@escaping (Result<Data, Swift.Error>) -> Void))
     {
-#if canImport(Clibgraphviz) && canImport(cgraph) && canImport(gvc)
         let options = self.options
         let layout = self.layout
 
         Renderer.queue.async {
             let result = Result { () throws -> Data in
+#if canImport(Clibgraphviz) && canImport(cgraph) && canImport(gvc)
                 let context = gvContext()
                 defer { gvFreeContext(context)}
 
@@ -111,10 +111,12 @@ public class Renderer {
                 guard let bytes = data else { return Data() }
 
                 return Data(bytes: UnsafeRawPointer(bytes), count: Int(length))
+#else
+                throw Error(message: "Please install GraphViz to render graphs. You can use `brew install GraphViz` to do so.")
+#endif
             }
 
             completion(result)
         }
-        #endif
     }
 }

@@ -30,7 +30,7 @@ extension Graph {
      - Throws: `CocoaError` if the corresponding GraphViz tool isn't available.
      */
     @available(macOS 10.15, *)
-    public func render(using layout: LayoutAlgorithm,
+    public func renderAsync(using layout: LayoutAlgorithm,
                        to format: Format,
                        with options: Renderer.Options = [],
                        on queue: DispatchQueue = .main) async throws -> Data {

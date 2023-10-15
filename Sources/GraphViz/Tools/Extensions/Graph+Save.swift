@@ -31,7 +31,7 @@ extension GraphViz.Graph {
         print("Rendering", terminator: "... ")
         let dot:Data
         do {
-            dot = try await g.render(using: algorithm, to: format)
+            dot = try await g.renderAsync(using: algorithm, to: format)
         } catch let e {
             print("Failed!")
             print("🚨 Failed to get graph data.")

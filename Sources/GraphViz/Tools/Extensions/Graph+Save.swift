@@ -25,43 +25,24 @@ extension GraphViz.Graph {
         format: GraphViz.Format = .pdf,
         algorithm: GraphViz.LayoutAlgorithm = .twopi,
         folder: URL = FileManager.default.homeDirectoryForCurrentUser
-    ) async {
+    ) async throws {
         var g = self
         g.overlap = "false"
-
-        print("Rendering", terminator: "... ")
         let data:Data
-        var _format: Format = format
+        
 
-        do {
 #if canImport(Clibgraphviz) && canImport(cgraph) && canImport(gvc)
-            data = try await g.render(using: algorithm, to: _format)
+        let fileExtension = format.rawValue
+        data = try await g.render(using: algorithm, to: format)
 #else
+        /// If `graphviz` isn't installed, we'll generate a text file in the dot format.
+        let fileExtension = "txt"
         let graphString = DOTEncoder().encode(g)
         data = graphString.data(using: .utf8)!
-        _format = .dot
 #endif
-        } catch let e {
-            print("Failed!")
-            print("🚨 Failed to get graph data.")
-            print("🚨 \(e.localizedDescription)")
-            let graphString = DOTEncoder().encode(g)
-            print("🚨 \(graphString)")
-            return
-        }
-        print("Done!")
         let outputURL = folder.appending(
-            path: "Desktop/\(basename).\(_format.rawValue)"
+            path: "Desktop/\(basename).\(fileExtension)"
         ).standardizedFileURL
-        do {
-            print("Writing Data", terminator: " ... ")
-            try data.write(to: outputURL)
-            print("Saved to \(outputURL.path)", terminator: "... ")
-        }
-        catch let e {
-            print("Failed!")
-            print("🚨 Failed to save SVG to \(outputURL).")
-            print("🚨 Error: \(e)")
-        }
+        try data.write(to: outputURL)
     }
 }

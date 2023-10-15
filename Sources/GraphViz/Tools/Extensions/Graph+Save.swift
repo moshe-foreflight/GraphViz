@@ -25,7 +25,7 @@ extension GraphViz.Graph {
         format: GraphViz.Format = .pdf,
         algorithm: GraphViz.LayoutAlgorithm = .twopi,
         folder: URL = FileManager.default.homeDirectoryForCurrentUser
-    ) async throws {
+    ) async {
         var g = self
         g.overlap = "false"
 

@@ -85,7 +85,7 @@ public class Renderer {
 
         Renderer.queue.async {
             let result = Result { () throws -> Data in
-#if canImport(Clibgraphviz) && canImport(cgraph) && canImport(gvc)
+#if canImport(Clibgraphviz)
                 let context = gvContext()
                 defer { gvFreeContext(context)}
 

@@ -17,7 +17,7 @@ extension Graph {
                        on queue: DispatchQueue = .main,
                        completion: (@escaping (Result<Data, Swift.Error>) -> Void))
     {
-        Renderer(layout: layout).render(graph: self, to: format, completion: completion)
+        Renderer(layout: layout, options: options).render(graph: self, to: format, completion: completion)
     }
     
     /**

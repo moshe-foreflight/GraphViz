@@ -27,16 +27,22 @@ extension GraphViz.Graph {
         basename:String,
         format: GraphViz.Format = .pdf,
         algorithm: GraphViz.LayoutAlgorithm = .twopi,
-        folder: URL = FileManager.default.homeDirectoryForCurrentUser
+        folder: URL = FileManager.default.homeDirectoryForCurrentUser,
+        options: Renderer.Options = []
     ) async throws -> String {
         var g = self
         g.overlap = "false"
         let data:Data
-        
+        let fileExtension = format.rawValue
         
 #if canImport(Clibgraphviz)
-        let fileExtension = format.rawValue
-        data = try await g.render(using: algorithm, to: format)
+        if format == .dot {
+            /// If `graphviz` isn't installed, we'll generate a text file in the dot format.
+            let graphString = DOTEncoder().encode(g)
+            data = graphString.data(using: .utf8)!
+        } else {
+            data = try await g.render(using: algorithm, to: format, with:options)
+        }
 #else
         /// If `graphviz` isn't installed, we'll generate a text file in the dot format.
         let fileExtension = "txt"
